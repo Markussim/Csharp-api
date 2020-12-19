@@ -7,12 +7,13 @@
     <script>
       run();
       async function run() {
+        let words = "Achelousaurus was a ceratopsid dinosaur that lived about 74.2 million years ago, during the Late Cretaceous. The first fossils of the genus were collected from the Two Medicine Formation in the U.S. state of Montana in 1987. Mainly known from skull material, Achelousaurus was about 6 m (20 ft) long, with a weight of about 3 tonnes (3.3 short tons). It had a large head with a hooked beak, and a bony neck-frill with a pair of long, curved spikes. In the places where other centrosaurines often had horns, Achelousaurus had bosses (roundish protuberances) above the eyes and on the snout that may have been used in fights and for display. It has been suggested that Achelousaurus was a transitional form between Einiosaurus (which had spikes but no bosses) and Pachyrhinosaurus (which had larger bosses), though this is debated. As a ceratopsian, Achelousaurus would have been a herbivore. It appears to have had a high metabolic rate, though lower than that of modern mammals and birds. (Full article...) "
         let response = await fetch("/test", {
           method: "POST",
 
           // whatever data you want to post with a key-value pair
 
-          body: "word=hello",
+          body: "word=" + words,
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },

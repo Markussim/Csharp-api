@@ -13,15 +13,26 @@ namespace Csharp_api
 
         public static string getSynonym(String word)
         {
-
             string output = "";
 
             foreach (var item in otherJson)
             {
-                if(item.word == word) {
-                    System.Console.WriteLine(item.synonyms[0]);
-                    output = item.synonyms[0];
+                if (item.word == word)
+                {
+                    try
+                    {
+                        System.Console.WriteLine(item.synonyms[0]);
+                        output = item.synonyms[0];
+                    }
+                    catch { }
+
+                    break;
                 }
+            }
+
+            if (output.Length == 0)
+            {
+                output = word;
             }
 
             return output;
@@ -32,6 +43,6 @@ namespace Csharp_api
     {
         public String word { get; set; }
 
-        public List<String> synonyms { get; set;}
+        public List<String> synonyms { get; set; }
     }
 }
