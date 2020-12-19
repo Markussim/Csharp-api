@@ -9,18 +9,16 @@ using System.Threading;
 
 namespace Csharp_api.Controllers
 {
-    
+
 
     [ApiController]
     [Route("/test")]
-    public class OtherController : ControllerBase
-    {        
-        public static String result = System.IO.File.ReadAllText(@"./data/synonym.html");
-
-        [HttpGet]
-        public ActionResult Get()
+    public class PostController : ControllerBase
+    {
+        [HttpPost]
+        public String Post()
         {
-            return Content(result, "text/html");
+            return Synonyms.getSynonym("hello");
         }
     }
 }
