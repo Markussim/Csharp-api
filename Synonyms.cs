@@ -1,5 +1,7 @@
 using System;
 using System.Text.Json;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Csharp_api
 {
@@ -7,27 +9,29 @@ namespace Csharp_api
     public abstract class Synonyms
     {
         public static string text = System.IO.File.ReadAllText(@"./data/synonyms.json");
-
-        public static JsonDocument json = JsonDocument.Parse(text);
-        public static JsonElement root = json.RootElement;
+        public static List<WordClass> otherJson = System.Text.Json.JsonSerializer.Deserialize<List<WordClass>>(text);
 
         public static string getSynonym(String word)
         {
-            int index = 0;
 
-            for (int i = 0; i < root.GetArrayLength(); i++)
+            string output = "";
+
+            foreach (var item in otherJson)
             {
-                Console.WriteLine(i);
-                if (root[i].GetProperty("word").ToString() == word)
-                {
-                    index = i;
-                    break;
+                if(item.word == word) {
+                    System.Console.WriteLine(item.synonyms[0]);
+                    output = item.synonyms[0];
                 }
             }
 
-            String hmm = root[index].GetProperty("word").ToString();
-
-            return hmm;
+            return output;
         }
+    }
+
+    public class WordClass
+    {
+        public String word { get; set; }
+
+        public List<String> synonyms { get; set;}
     }
 }

@@ -18,7 +18,7 @@ namespace Csharp_api.Controllers
         [HttpPost]
         public String Post()
         {
-            return Synonyms.getSynonym("hello");
+            return Synonyms.getSynonym("bless");
         }
     }
 }
