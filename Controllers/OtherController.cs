@@ -12,7 +12,7 @@ namespace Csharp_api.Controllers
 
 
     [ApiController]
-    [Route("/test")]
+    [Route("/")]
     public class OtherController : ControllerBase
     {
         public static bool debug = true;
