@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test</title>
     <script>
-      run();
       async function run() {
-        let words = "Achelousaurus was a ceratopsid dinosaur that lived about 74.2 million years ago, during the Late Cretaceous. The first fossils of the genus were collected from the Two Medicine Formation in the U.S. state of Montana in 1987. Mainly known from skull material, Achelousaurus was about 6 m (20 ft) long, with a weight of about 3 tonnes (3.3 short tons). It had a large head with a hooked beak, and a bony neck-frill with a pair of long, curved spikes. In the places where other centrosaurines often had horns, Achelousaurus had bosses (roundish protuberances) above the eyes and on the snout that may have been used in fights and for display. It has been suggested that Achelousaurus was a transitional form between Einiosaurus (which had spikes but no bosses) and Pachyrhinosaurus (which had larger bosses), though this is debated. As a ceratopsian, Achelousaurus would have been a herbivore. It appears to have had a high metabolic rate, though lower than that of modern mammals and birds. (Full article...) "
+        let milliseconds = Date.now();
+        let words = document.getElementById("text").value;
+        document.getElementById("textBox").innerText = "Loading";
         let response = await fetch("/test", {
           method: "POST",
 
           // whatever data you want to post with a key-value pair
 
-          body: "word=" + words,
+          body: "word=" + escape(words),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
@@ -21,11 +22,34 @@
 
         let data = await response.text();
 
-        document.getElementById("test").innerText = data;
+        document.getElementById("textBox").innerText = data;
+
+        document.getElementById("Again").hidden = false;
+
+        console.log(Date.now() - milliseconds);
+      }
+
+      function again() {
+        document.getElementById("Again").hidden = true;
+        document.getElementById("text").value = document.getElementById(
+          "textBox"
+        ).innerText;
+        run();
       }
     </script>
   </head>
   <body id="test">
-    This is a test page
+    <form
+      onsubmit="run(); return false"
+      action="/synonyms"
+      method="post"
+      enctype="application/json"
+    >
+      <textarea id="text" type="text" name="text"></textarea>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+    <p id="textBox"></p>
+    <button onclick="again()" id="Again" hidden>Submit again</button>
   </body>
 </html>

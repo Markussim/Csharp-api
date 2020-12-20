@@ -10,25 +10,30 @@ namespace Csharp_api
     {
         public static string text = System.IO.File.ReadAllText(@"./data/synonyms.json");
         public static List<WordClass> otherJson = System.Text.Json.JsonSerializer.Deserialize<List<WordClass>>(text);
+        public static Random rnd = new Random();
 
         public static string getSynonym(String word)
         {
             string output = "";
 
-            foreach (var item in otherJson)
+            if (word.Length > 1)
             {
-                if (item.word == word)
+                foreach (var item in otherJson)
                 {
-                    try
+                    if (item.word == word)
                     {
-                        System.Console.WriteLine(item.synonyms[0]);
-                        output = item.synonyms[0];
-                    }
-                    catch { }
+                        try
+                        {
+                            output = item.synonyms[rnd.Next(0, item.synonyms.ToArray().Length)];
+                        }
+                        catch { }
 
-                    break;
+                        break;
+                    }
                 }
             }
+
+
 
             if (output.Length == 0)
             {
