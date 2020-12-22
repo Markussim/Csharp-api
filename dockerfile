@@ -15,4 +15,6 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 COPY ./data ./data
 
+EXPOSE 80
+
 ENTRYPOINT ["dotnet", "Csharp-api.dll"]
