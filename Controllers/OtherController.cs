@@ -15,7 +15,7 @@ namespace Csharp_api.Controllers
     [Route("/")]
     public class OtherController : ControllerBase
     {
-        public static bool debug = true;
+        public static bool debug = false;
         public static String result = System.IO.File.ReadAllText(@"./data/synonym.html");
 
         [HttpGet]
