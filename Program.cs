@@ -21,6 +21,7 @@ namespace Csharp_api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls(Environment.GetEnvironmentVariable("PORT"));
                 });
     }
 }
