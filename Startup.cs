@@ -15,8 +15,6 @@ namespace Csharp_api
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,14 +25,8 @@ namespace Csharp_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-        {
-            options.AddPolicy(name: MyAllowSpecificOrigins,
-                              builder =>
-                              {
-                                  builder.WithOrigins("http://marksism.space");
-                              });
-        });
+            
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -54,6 +46,12 @@ namespace Csharp_api
             }
 
             app.UseRouting();
+
+            
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)); // allow any origin
 
             app.UseAuthorization();
 
