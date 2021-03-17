@@ -13,6 +13,7 @@ namespace Csharp_api
     {
         public static void Main(string[] args)
         {
+            Synonyms.sort();
             CreateHostBuilder(args).Build().Run();
         }
 

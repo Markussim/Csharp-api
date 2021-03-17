@@ -2,6 +2,8 @@ using System;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Collections;
+using System.Globalization;
 
 namespace Csharp_api
 {
@@ -10,52 +12,72 @@ namespace Csharp_api
     {
         public static string text = System.IO.File.ReadAllText(@"./data/synonyms.json");
         public static List<WordClass> otherJson = System.Text.Json.JsonSerializer.Deserialize<List<WordClass>>(text);
+
         public static Random rnd = new Random();
 
         public static string getSynonym(String word)
         {
+
             string output = "";
+
+            /*foreach (var item in otherJson.ToArray())
+            {
+                System.Console.WriteLine(item.word);
+            }*/
+
 
             if (word.Length > 1)
             {
-                int minNum = 0;
-                int maxNum = otherJson.Count - 1;
+                WordClass word2 = new WordClass();
 
-                while (minNum <= maxNum)
+                word2.word = word;
+
+                int index = otherJson.BinarySearch(word2);
+
+                if (index > 0 && index < otherJson.Count)
                 {
-                    int mid = (minNum + maxNum) / 2;
+                    WordClass foundWord = otherJson[index];
 
-                    if (word == otherJson[mid].word)
-                    {
-                        output = otherJson[mid].word;
-                        break;
-                    }
-                    else if (string.Compare(word, otherJson[mid].word) > 0)
-                    {
-                        maxNum = mid - 1;
-                    }
-                    else
-                    {
-                        minNum = mid + 1;
-                    }
+                    if (foundWord.synonyms.Count > 0) output = foundWord.synonyms[rnd.Next(0, foundWord.synonyms.Count - 1)];
+
+                    //output = "Hmm";
                 }
+
+
             }
+
+
 
 
             if (output.Length == 0)
             {
-                System.Console.WriteLine("Fail");
+                //System.Console.WriteLine("Fail");
                 output = word;
             }
 
             return output;
         }
+
+        public static void sort()
+        {
+            otherJson.Sort();
+        }
     }
 
-    public class WordClass
+    public class WordClass : IComparable<WordClass>
     {
         public String word { get; set; }
 
         public List<String> synonyms { get; set; }
+
+        public int CompareTo(WordClass other)
+        {
+
+            /*if (String.Compare(other.word, this.word) > 0) return -1;
+            else if (this.word.Equals(other.word)) return 0;
+            else return 1;*/
+
+            return this.word.CompareTo(other.word);
+        }
     }
 }
