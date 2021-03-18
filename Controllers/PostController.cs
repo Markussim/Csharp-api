@@ -44,10 +44,15 @@ namespace Csharp_api.Controllers
 
             List<Thread> myListThingGräj = new List<Thread>();
 
-            for (int i = 0; i < wordList.Length; i++)
+            for (int i = 0; i < Environment.ProcessorCount; i++)
             {
-                myListThingGräj.Add(new Thread(setPartOfArray));
-                myListThingGräj[i].Start(i);
+                //System.Console.WriteLine("Got here");
+                int start = ((wordList.Length / Environment.ProcessorCount) * i);
+
+                int end = start + (wordList.Length / Environment.ProcessorCount);
+
+                myListThingGräj.Add(new Thread(() => setPartOfArray(start, end)));
+                myListThingGräj[i].Start();
             }
 
             /*for (int i = 0; i < wordList.Length; i++)
@@ -67,14 +72,26 @@ namespace Csharp_api.Controllers
 
             sw.Stop();
 
-            System.Console.WriteLine((int)(((double)sw.ElapsedMilliseconds / wordList.Length) * 1000));
+            System.Console.WriteLine((int)((sw.Elapsed.TotalMilliseconds / wordList.Length) * 1000) + " μs");
 
             return output;
 
-            void setPartOfArray(object position)
+            void setPartOfArray(int startPosition, int endPosition)
             {
-                var pos = int.Parse(position.ToString());
-                prossesedWordList[pos] = Synonyms.getSynonym(wordList[pos]);
+                for (int i = startPosition; i < endPosition; i++)
+                {
+
+                    try
+                    {
+                        prossesedWordList[i] = Synonyms.getSynonym(wordList[i]);
+                    }
+                    catch (System.Exception)
+                    {
+                        System.Console.WriteLine(i);
+                        throw;
+                    }
+
+                }
             }
         }
     }
