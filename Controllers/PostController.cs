@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ using System.Diagnostics;
 
 namespace Csharp_api.Controllers
 {
-
-
     [ApiController]
     [Route("/test")]
     public class PostController : ControllerBase
@@ -25,12 +24,15 @@ namespace Csharp_api.Controllers
 
             string data = Request.Form["word"];
 
+            data = HttpUtility.UrlDecode(data);
+
             if (data.Length > 10000)
             {
                 data = data.Substring(0, 10000);
             }
 
             string[] wordList = data.Split(' ').Select(str => str.Trim()).ToArray();
+
 
             string[] prossesedWordList = new string[wordList.Length];
 
@@ -94,5 +96,10 @@ namespace Csharp_api.Controllers
                 }
             }
         }
+    }
+
+    public class WordForm
+    {
+        public string Name { get; set; }
     }
 }
