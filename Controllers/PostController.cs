@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using System.Diagnostics;
 
 
 namespace Csharp_api.Controllers
@@ -19,9 +20,13 @@ namespace Csharp_api.Controllers
         [HttpPost]
         public String Post(int? id)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             string data = Request.Form["word"];
-            
-            if(data.Length > 10000) {
+
+            if (data.Length > 10000)
+            {
                 data = data.Substring(0, 10000);
             }
 
@@ -60,9 +65,14 @@ namespace Csharp_api.Controllers
                 output += item + " ";
             }
 
+            sw.Stop();
+
+            System.Console.WriteLine((int)(((double)sw.ElapsedMilliseconds / wordList.Length) * 1000));
+
             return output;
 
-            void setPartOfArray(object position) {
+            void setPartOfArray(object position)
+            {
                 var pos = int.Parse(position.ToString());
                 prossesedWordList[pos] = Synonyms.getSynonym(wordList[pos]);
             }
